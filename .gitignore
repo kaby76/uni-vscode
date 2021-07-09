@@ -1,0 +1,11 @@
+Logger/bin/
+Logger/obj/Logger.csproj.nuget.dgspec.json
+Logger/obj/
+LspHelpers/bin/
+LspHelpers/obj/
+Server/.vs/
+Server/bin/
+Server/obj/
+Workspaces/bin/
+Workspaces/obj/
+VsCode/.vscode/
