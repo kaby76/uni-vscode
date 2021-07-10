@@ -13,14 +13,40 @@ public class Grammar
     public static Lexer Lexer { get; set; }
     public static ITokenStream TokenStream { get; set; }
     public static IParseTree Tree { get; set; }
-    public static List<string> Classes { get; set; }
+    private static List<string> _classifiers = null;
+    public static List<string> Classifiers
+    {
+        get
+        {
+            if (_classifiers == null)
+            {
+                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                var grammar_classes = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-classifiers");
+                var cs = grammar_classes.Split("\n");
+                _classifiers = cs.Select(c => c.Trim()).Where(c => c != "").ToList();
+            }
+            return _classifiers;
+        }
+    }
+    private static List<string> _classes = null;
+    public static List<string> Classes
+    {
+        get
+        {
+            if (_classes == null)
+            {
+                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                var grammar_classes = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-classes");
+                var cs = grammar_classes.Split("\n");
+                _classes = cs.Select(c => c.Trim()).Where(c => c != "").ToList();
+            }
+            return _classes;
+        }
+    }
     public static IParseTree Parse(string input)
     {
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var grammar_location = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-location");
-        var grammar_classes = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-classes");
-        var cs = grammar_classes.Split("\n");
-        Classes = cs.Select(c => c.Trim()).Where(c => c != "").ToList();
         var path = grammar_location;
         var full_path = path + "\\Generated\\bin\\Debug\\net5.0\\";
         var exists = File.Exists(full_path + "Test.dll");

@@ -14,3 +14,4 @@ VsCode/uni-vscode-1.0.0.vsix
 VsCode/node_modules/
 VsCode/out/
 VsCode/server/net5.0/
+.vs/

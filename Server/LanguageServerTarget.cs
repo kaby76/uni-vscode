@@ -206,14 +206,7 @@
                         Range = false,
                         Legend = new SemanticTokensLegend()
                         {
-                            tokenTypes = new string[] {
-                                "class",
-                                "variable",
-                                "enum",
-                                "comment",
-                                "string",
-                                "keyword",
-                            },
+                            tokenTypes = new Module().GetClasses().ToArray(),
                             tokenModifiers = new string[] {
                                 "declaration",
                                 "documentation",
@@ -1348,38 +1341,11 @@
                     // Let us fill up temp values to figure out.
                     int start = 0;
                     var new_r = r.ToList();
+                    int xxx = 0;
                     foreach (var s in new_r)
                     {
                         int kind;
-                        if (s.kind == 0)
-                        {
-                            // Parser symbol
-                            kind = 0;
-                        }
-                        else if (s.kind == 1)
-                        {
-                            // Lexer symbol
-                            kind = 1;
-                        }
-                        else if (s.kind == 2)
-                        {
-                            // Comment
-                            kind = 3;
-                        }
-                        else if (s.kind == 3)
-                        {
-                            // Keyword
-                            kind = 5;
-                        }
-                        else if (s.kind == 4)
-                        {
-                            // Literal
-                            kind = 4;
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                        kind = s.kind;
 
                         (int, int) lc_start = new Module().GetLineColumn(start, document);
                         (int, int) lcs = new Module().GetLineColumn(s.start, document);
@@ -1396,7 +1362,7 @@
                         // tokenType
                         data.Add((uint)kind);
                         // tokenModifiers
-                        data.Add(0);
+                        data.Add((uint)0);
 
                         start = s.start;
                     }
@@ -1405,7 +1371,12 @@
                     if (trace)
                     {
                         Logger.Log.Write("returning semantictokens");
-                        Logger.Log.WriteLine(string.Join(" ", data));
+                        for (int i = 0; i < data.Count; ++i)
+                        {
+                            if (i % 5 == 0) Logger.Log.WriteLine();
+                            Logger.Log.Write(" " + data[i]);
+                        }
+                        Logger.Log.WriteLine();
                     }
                 }
                 catch (LanguageServerException e)
