@@ -34,22 +34,22 @@ in Language Server Protocol 3.16.,
 [SemanticTokenTypes](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_semanticTokens).
 The following is an example of six class types to be used.
 
-    class
-    property
-    variable
-    method
-    keyword
-    string
+        class
+        property
+        variable
+        method
+        keyword
+        string
 
 * `~/.grammar-classifiers` is the list of XPath expressions that
 define the terminal symbol searches that denote the classes. E.g.,
 
-    //classDeclaration/IDENTIFIER
-    //fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER
-    //variableDeclarator/variableDeclaratorId/IDENTIFIER
-    //methodDeclaration/IDENTIFIER
-    //(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)
-    //(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)
+        //classDeclaration/IDENTIFIER
+        //fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER
+        //variableDeclarator/variableDeclaratorId/IDENTIFIER
+        //methodDeclaration/IDENTIFIER
+        //(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)
+        //(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)
 
 Then, 
 
