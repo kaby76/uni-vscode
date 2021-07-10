@@ -13,8 +13,8 @@ extension.
 
 You will need prerequisites:
 
-* .NET SDK
-* Trash
+* [.NET SDK](https://dotnet.microsoft.com/)
+* [Trash](https://github.com/kaby76/Domemtech.Trash#install)
 
 Then, follow this script to create an Antlr4 parser for a grammar.
 
