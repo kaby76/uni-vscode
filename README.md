@@ -21,13 +21,13 @@ Then, follow this script to create an Antlr4 parser for a grammar.
     # Clone the grammars-v4 repo, pick a grammar, and generate a parser for the extension.
     git clone https://github.com/antlr/grammars-v4.git
     cd grammars-v4/java/java
-    trgen; cd Generated; make
+    trgen; cd Generated; dotnet build
 
 Then, clone this repo, and set up three files to specify how the server
 is to work:
 
 * `~/.grammar-location` is the full path of the grammar, e.g.
-`c:\Users\kenne\Documents\GitHub\i2248\java\java`.
+`c:\Users\kenne\Documents\GitHub\grammars-v4\java\java`.
 * `~/.grammar-classes` is a list, one per line, of the classes
 of symbols used. These are chosen from the list of classifications
 in Language Server Protocol 3.16.,
