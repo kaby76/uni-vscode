@@ -1,7 +1,14 @@
 # uni-vscode
 
 This is a "universal language" vscode extension based on Antlr
-and Language Server Protocol. The code is divided into two parts:
+and Language Server Protocol. It is useful for quick parsing checks
+using VSCode. The only real requirement is that the grammar should be
+[target agnostic](https://github.com/antlr/antlr4/blob/master/doc/python-target.md#target-agnostic-grammars).
+Then, using [Trash](https://github.com/kaby76/Domemtech.Trash),
+a parse can be generated for the grammar and plugged into
+this extension.
+
+The code is divided into two parts:
 Server and VsCode:
 
 * Server (with Logger, LspHelpers, and Workspaces) is C# code that
