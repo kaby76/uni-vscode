@@ -24,14 +24,18 @@ Then, follow this script to create an Antlr4 parser for a grammar.
     trgen; cd Generated; dotnet build
 
 Then, clone this repo, and set up three files to specify how the server
-is to work:
+is to work. (Note, the use of `~` tilde is the path denoted by the return
+value of the C# call [Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)](https://github.com/kaby76/uni-vscode/blob/main/Server/Grammar.cs#L23).
+Make sure to place the files accordingly.)
 
 * `~/.grammar-location` is the full path of the grammar, e.g.
 `c:\Users\kenne\Documents\GitHub\grammars-v4\java\java`.
 * `~/.grammar-classes` is a list, one per line, of the classes
 of symbols used. These are chosen from the list of classifications
 in Language Server Protocol 3.16.,
-[SemanticTokenTypes](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_semanticTokens).
+[SemanticTokenTypes](https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_semanticTokens). Note, the classes defined here
+can be in any order, but there is a one-to-one correspondance of the
+class name here, and the XPath expression in `~/.grammar-classifiers`.
 The following is an example of six class types to be used.
 
         class
