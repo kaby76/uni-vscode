@@ -48,9 +48,9 @@ public class Grammar
         var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var grammar_location = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-location");
         var path = grammar_location;
-        var full_path = path + "\\Generated\\bin\\Debug\\net5.0\\";
+        var full_path = path + "/Generated/bin/Debug/net5.0/";
         var exists = File.Exists(full_path + "Test.dll");
-        if (!exists) full_path = path + "bin\\Debug\\net5.0\\";
+        if (!exists) full_path = path + "bin/Debug/net5.0/";
         Assembly asm1 = Assembly.LoadFile(full_path + "Antlr4.Runtime.Standard.dll");
         Assembly asm = Assembly.LoadFile(full_path + "Test.dll");
         var xxxxxx = asm1.GetTypes();

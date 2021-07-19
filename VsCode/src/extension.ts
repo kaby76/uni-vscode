@@ -62,16 +62,18 @@ let client: vscodelc.LanguageClient;
 
 export function activate(context: vscode.ExtensionContext)
 {
+    var fn = "dotnet";
+    
     var isWin = process.platform === "win32";
-    var fn = __dirname + '/../Server/net5.0/Server.exe';
+    var ag = __dirname + '/../Server/net5.0/Server.dll';
     if (! isWin) {
-        fn = __dirname + '/../server/net5.0/Server';
+        ag = __dirname + '/../server/net5.0/Server.dll';
     }
 
     const server: vscodelc.Executable =
     {
         command: fn,
-        args: [],
+        args: [ag],
         options: { shell: false, detached: false }
     };
 
