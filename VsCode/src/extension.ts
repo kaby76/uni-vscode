@@ -62,7 +62,11 @@ let client: vscodelc.LanguageClient;
 
 export function activate(context: vscode.ExtensionContext)
 {
+    var isWin = process.platform === "win32";
     var fn = __dirname + '/../Server/net5.0/Server.exe';
+    if (! isWin) {
+        fn = __dirname + '/../server/net5.0/Server';
+    }
 
     const server: vscodelc.Executable =
     {
