@@ -139,9 +139,9 @@
             return myindex;
         }
 
-        public List<string> GetClasses()
+        public List<string> GetClasses(string suffix)
         {
-            return Grammar.Classes;
+            return Grammar.Classes(suffix);
         }
 
         public QuickInfo GetQuickInfo(int index, Document doc)
@@ -150,7 +150,8 @@
             {
                 Compile(doc.Workspace);
             }
-
+            var ffn = doc.FullPath;
+            var suffix = System.IO.Path.GetExtension(ffn);
             Antlr4.Runtime.Tree.IParseTree pt = Find(index, doc);
             Antlr4.Runtime.Tree.IParseTree p = _all_parses[doc];
             if (pt == null) return null;
@@ -163,7 +164,7 @@
                 var c = _all_classified_nodes[i];
                 if (c.Contains(pt))
                 {
-                    var clas = Grammar.Classes[i];
+                    var clas = Grammar.Classes(suffix)[i];
                     sb.Append(" " + clas);
                 }
             }
@@ -511,12 +512,13 @@
                 {
                     if (!document.Changed) continue;
                     string file_name = document.FullPath;
+                    string suffix = System.IO.Path.GetExtension(file_name);
                     if (file_name == null) continue;
-                    var p = Grammar.Parse(document.Code);
+                    var p = Grammar.Parse(document);
                     _all_parses[document] = p;
                     document.Changed = false;
                     _all_classified_nodes = new List<List<IParseTree>>();
-                    foreach (var c in Grammar.Classifiers)
+                    foreach (var c in Grammar.Classifiers(suffix))
                     {
                         if (c == "")
                         {

@@ -1,5 +1,6 @@
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using Server;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,46 +14,36 @@ public class Grammar
     public static Lexer Lexer { get; set; }
     public static ITokenStream TokenStream { get; set; }
     public static IParseTree Tree { get; set; }
-    private static List<string> _classifiers = null;
-    public static List<string> Classifiers
+    public static List<string> Classifiers(string suffix)
     {
-        get
-        {
-            if (_classifiers == null)
-            {
-                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                var grammar_classes = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-classifiers");
-                var cs = grammar_classes.Split("\n");
-                _classifiers = cs.Select(c => c.Trim()).Where(c => c != "").ToList();
-            }
-            return _classifiers;
-        }
+        var opt = Program.Options.Where(o => o.Suffix == suffix).First();
+        return opt.ClassesAndClassifiers.Select(c => c.Item2.Trim()).Where(c => c != "").ToList();
     }
-    private static List<string> _classes = null;
-    public static List<string> Classes
+
+    public static List<string> AllClasses()
     {
-        get
-        {
-            if (_classes == null)
-            {
-                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                var grammar_classes = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-classes");
-                var cs = grammar_classes.Split("\n");
-                _classes = cs.Select(c => c.Trim()).Where(c => c != "").ToList();
-            }
-            return _classes;
-        }
+        IEnumerable<Tuple<string, string>> o1 = Program.Options
+            .SelectMany(p => p.ClassesAndClassifiers);
+        var o2 = o1.Select(p => p.Item1).ToList();
+        return o2;
     }
-    public static IParseTree Parse(string input)
+
+    public static List<string> Classes(string suffix)
     {
-        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var grammar_location = System.IO.File.ReadAllText(home + Path.DirectorySeparatorChar + ".grammar-location");
-        var path = grammar_location;
-        var full_path = path + "/Generated/bin/Debug/net5.0/";
-        var exists = File.Exists(full_path + "Test.dll");
-        if (!exists) full_path = path + "bin/Debug/net5.0/";
-        Assembly asm1 = Assembly.LoadFile(full_path + "Antlr4.Runtime.Standard.dll");
-        Assembly asm = Assembly.LoadFile(full_path + "Test.dll");
+        var opt = Program.Options.Where(o => o.Suffix == suffix).First();
+        return opt.ClassesAndClassifiers.Select(c => c.Item1.Trim()).Where(c => c != "").ToList();
+    }
+
+    public static IParseTree Parse(Workspaces.Document document)
+    {
+        string input = document.Code;
+        var dll = Program.Options
+            .Where(p => p.Suffix == Path.GetExtension(document.FullPath))
+            .Select(p => p.ParserLocation)
+            .First();
+        var full_path = Path.GetDirectoryName(dll);
+        Assembly asm1 = Assembly.LoadFile(full_path + Path.DirectorySeparatorChar + "Antlr4.Runtime.Standard.dll");
+        Assembly asm = Assembly.LoadFile(dll);
         var xxxxxx = asm1.GetTypes();
         Type[] types = asm.GetTypes();
         Type type = asm.GetType("Program");

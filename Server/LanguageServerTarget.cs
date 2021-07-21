@@ -206,7 +206,7 @@
                         Range = false,
                         Legend = new SemanticTokensLegend()
                         {
-                            tokenTypes = new Module().GetClasses().ToArray(),
+                            tokenTypes = Grammar.AllClasses().ToArray(),
                             tokenModifiers = new string[] {
                                 "declaration",
                                 "documentation",
@@ -1341,7 +1341,6 @@
                     // Let us fill up temp values to figure out.
                     int start = 0;
                     var new_r = r.ToList();
-                    int xxx = 0;
                     foreach (var s in new_r)
                     {
                         int kind;

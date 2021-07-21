@@ -5,6 +5,11 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
+    using StreamJsonRpc;
+    using System.IO;
+    using System.Text;
+    using System.Text.Json;
 
     internal partial class Program : IDisposable
     {
@@ -15,9 +20,44 @@
         private string currentSettings;
         private MessageType messageType;
         private bool isDisposed;
+        public static List<Options> Options;
 
         public static void Main(string[] args)
         {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var fn = ".uni-vscode.rc";
+            var ffn = home + Path.DirectorySeparatorChar + fn;
+            if (System.IO.File.Exists(ffn))
+            {
+                var jsonString = File.ReadAllText(home + Path.DirectorySeparatorChar + fn);
+                var o = JsonSerializer.Deserialize<List<Options>>(jsonString);
+                Program.Options = o;
+            }
+            else
+            {
+                List<Options> options = new List<Options>()
+                {
+                    new Options()
+                    {
+                        Suffix = ".java",
+                        ParserLocation = "c:/Users/kenne/Documents/GitHub/i2248/java/java/Generated/bin/Debug/net5.0/Test.dll",
+                        ClassesAndClassifiers = new List<Tuple<string, string>>()
+                        {
+                            new Tuple<string, string>("class", "//classDeclaration/IDENTIFIER"),
+                            new Tuple<string, string>("property", "//fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER"),
+                            new Tuple<string, string>("variable", "//variableDeclarator/variableDeclaratorId/IDENTIFIER"),
+                            new Tuple<string, string>("method", "//methodDeclaration/IDENTIFIER"),
+                            new Tuple<string, string>("keyword", "//(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)"),
+                            new Tuple<string, string>("string", "//(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)"),
+                        }
+                    }
+                };
+                Utf8JsonWriter swj = new Utf8JsonWriter(File.Open(ffn, FileMode.CreateNew));
+                JsonSerializer.Serialize<List<Options>>(swj, Program.Options);
+                swj.Dispose();
+                Program.Options = options;
+            }
+
             //TimeSpan delay = new TimeSpan(0, 0, 0, 20);
             //Console.Error.WriteLine("Waiting " + delay + " seconds...");
             //Thread.Sleep((int)delay.TotalMilliseconds);
@@ -34,8 +74,8 @@
 #pragma warning restore CA1801
 #pragma warning restore IDE0060 // Remove unused parameter
         {
-            System.IO.Stream stdin = Console.OpenStandardInput();
-            System.IO.Stream stdout = Console.OpenStandardOutput();
+            Stream stdin = Console.OpenStandardInput();
+            Stream stdout = Console.OpenStandardOutput();
             stdin = new LspTools.LspHelpers.EchoStream(stdin, new Dup("editor"),
                     LspTools.LspHelpers.EchoStream.StreamOwnership.OwnNone);
             stdout = new LspTools.LspHelpers.EchoStream(stdout, new Dup("server"),
