@@ -13,9 +13,9 @@ for Antlr4 grammars.
 The code is divided into two parts:
 Server and Client:
 
-* Server (with Logger, LspHelpers, and Workspaces) is C# code that
-implements a LSP server.
-* VsCode is Typescript code that implemements the client VSCode
+* The server (with Logger, LspHelpers, and Workspaces) is C# code that
+implements an LSP server.
+* The client is Typescript code that implemements the client VSCode
 extension.
 
 ## How to use this extension
