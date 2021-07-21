@@ -11,7 +11,7 @@ because static semantics computations (aka attributes) are not implemented
 for Antlr4 grammars.
 
 The code is divided into two parts:
-Server and VsCode:
+Server and Client:
 
 * Server (with Logger, LspHelpers, and Workspaces) is C# code that
 implements a LSP server.
