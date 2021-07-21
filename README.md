@@ -18,27 +18,44 @@ implements a LSP server.
 * VsCode is Typescript code that implemements the client VSCode
 extension.
 
-## How to use
+## How to use this extension
 
-You will need prerequisites:
+1) You will need prerequisites:
 
 * [.NET SDK](https://dotnet.microsoft.com/)
 * [Trash](https://github.com/kaby76/Domemtech.Trash#install)
 
-Then, follow this script to create an Antlr4 parser for a grammar.
+2) Clone the repo. Run dotnet to build the language server, and run the "install.sh" script
+to create the extesion for VSCode.
+
+The server is a
+C# program that reads stdin and writes to stdout. VSCode will redirect the input and output
+in order to communicate with the server.
+
+The client is a thin layer of code in Typescript. The "install.sh" script builds the
+.vsix file which you can install.
+
+    git clone https://github.com/kaby76/uni-vscode.git
+    cd uni-vscode
+    dotnet build
+    cd VsCode
+    bash clean.sh; bash install.sh
+
+3) Create (or copy) an Antlr4 grammar that you want to test.
+The grammar must be processed by the
+[trgen](https://github.com/kaby76/Domemtech.Trash/tree/main/trgen) application of Trash.
+`trgen` creates a standardized parser application from templates.
+
+The Java grammar from grammars-g4 works out of the box with the extension, so you may want to
+start there:
 
     # Clone the grammars-v4 repo, pick a grammar, and generate a parser for the extension.
     git clone https://github.com/antlr/grammars-v4.git
     cd grammars-v4/java/java
     trgen; cd Generated; dotnet build
 
-Then, clone this repo, and set up a file to specify how the server
-is to work. (Note, the use of `~` tilde is the path denoted by the return
-value of the C# call [Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)](https://github.com/kaby76/uni-vscode/blob/main/Server/Grammar.cs#L23).
-Make sure to place the file accordingly.)
-
-* `~/.uni-vscode.rc`. If the file doesn't exist, it will be created
-with a default for Java (you will then need to edit it).
+4) Create a `~/.uni-vscode.rc` file. For the Java example, the file should contain this
+configuration in JSON:
 
 	[{
 	    "Suffix":".java",
@@ -67,15 +84,13 @@ in Language Server Protocol 3.16.,
 can be in any order. The second item in the tuple is
 the XPath expression used to find parse tree nodes and label with the class.
 
-Then, 
 
-    git clone https://github.com/kaby76/uni-vscode.git
-    cd uni-vscode
-    dotnet build
-    cd VsCode
-    bash clean.sh; bash install.sh
+5) Run VSCode, and install the .vsix 
+
     code .
-    # In VSCode, type F5.
+    
+In VSCode, open a file (e.g., a Java source file). In the lower right corner, there is a type. Change
+the type of the file to "any". It takes a little while, but it should colorize the source file.
 
 ## Implementation
 
