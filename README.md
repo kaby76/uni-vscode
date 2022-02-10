@@ -57,18 +57,20 @@ start there:
 4) Create a `~/.uni-vscode.rc` file. For the Java example, the file should contain this
 configuration in JSON:
 
-	[{
-	    "Suffix":".java",
-	    "ParserLocation":"c:/Users/kenne/Documents/GitHub/i2248/java/java/Generated/bin/Debug/net5.0/Test.dll",
-	    "ClassesAndClassifiers":[
-	       {"Item1":"class","Item2":"//classDeclaration/IDENTIFIER"},
-	       {"Item1":"property","Item2":"//fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER"},
-	       {"Item1":"variable","Item2":"//variableDeclarator/variableDeclaratorId/IDENTIFIER"},
-	       {"Item1":"method","Item2":"//methodDeclaration/IDENTIFIER"},
-	       {"Item1":"keyword","Item2":"//(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)"},
-	       {"Item1":"string","Item2":"//(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)"}
-	       ]
-	}]
+```
+[{
+ "Suffix":".java",
+ "ParserLocation":"c:/Users/kenne/Documents/GitHub/i2248/java/java/Generated/bin/Debug/net5.0/Test.dll",
+ "ClassesAndClassifiers":[
+    {"Item1":"class","Item2":"//classDeclaration/IDENTIFIER"},
+    {"Item1":"property","Item2":"//fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER"},
+    {"Item1":"variable","Item2":"//variableDeclarator/variableDeclaratorId/IDENTIFIER"},
+    {"Item1":"method","Item2":"//methodDeclaration/IDENTIFIER"},
+    {"Item1":"keyword","Item2":"//(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)"},
+    {"Item1":"string","Item2":"//(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)"}
+  ]
+}]
+```
 
 The `Suffix` field is just the name of the suffix for the grammars
 recognized and applied.
