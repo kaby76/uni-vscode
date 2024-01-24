@@ -8,7 +8,7 @@ Server/bin/
 Server/obj/
 Workspaces/bin/
 Workspaces/obj/
-VsCode/.vscode/
+# VsCode/.vscode/   --- require so that we get a launch configuration.
 VsCode/package-lock.json
 VsCode/uni-vscode-1.0.0.vsix
 VsCode/node_modules/
