@@ -200,7 +200,7 @@
 
                     WorkspaceSymbolProvider = false,
 
-                    SemanticTokensProvider = new SemanticTokensOptions()
+/*		    SemanticTokensProvider = new SemanticTokensOptions()
                     {
                         Full = true,
                         Range = false,
@@ -213,6 +213,7 @@
                             }
                         }
                     },
+                    */
                 };
 
                 InitializeResult result = new InitializeResult

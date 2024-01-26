@@ -38,13 +38,12 @@ public class Grammar
     {
         string input = document.Code;
         var dll = Program.Options
-            .Where(p => p.Suffix == Path.GetExtension(document.FullPath))
             .Select(p => p.ParserLocation)
             .First();
         var full_path = Path.GetDirectoryName(dll);
         Assembly asm1 = Assembly.LoadFile(full_path + Path.DirectorySeparatorChar + "Antlr4.Runtime.Standard.dll");
         Assembly asm = Assembly.LoadFile(dll);
-        var xxxxxx = asm1.GetTypes();
+        //var xxxxxx = asm1.GetTypes();
         Type[] types = asm.GetTypes();
         Type type = asm.GetType("Program");
         var methods = type.GetMethods();
