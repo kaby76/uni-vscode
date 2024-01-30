@@ -10,36 +10,35 @@ using System.Text;
 
 public class Grammar
 {
-    public static Parser Parser { get; set; }
-    public static Lexer Lexer { get; set; }
-    public static ITokenStream TokenStream { get; set; }
-    public static IParseTree Tree { get; set; }
-    public static List<string> Classifiers(string suffix)
+    public Grammar() {}
+    public Parser Parser { get; set; }
+    public Lexer Lexer { get; set; }
+    public ITokenStream TokenStream { get; set; }
+    public IParseTree Tree { get; set; }
+    public Options Options { get; set; }
+    public string LanguageId { get; internal set; }
+
+    public List<string> Classifiers()
     {
-        var opt = Program.Options.Where(o => o.Suffix == suffix).First();
-        return opt.ClassesAndClassifiers.Select(c => c.Item2.Trim()).Where(c => c != "").ToList();
+        return Options.ClassesAndClassifiers.Select(c => c.Item2.Trim()).Where(c => c != "").ToList();
     }
 
-    public static List<string> AllClasses()
+    public List<string> AllClasses()
     {
-        IEnumerable<Tuple<string, string>> o1 = Program.Options
-            .SelectMany(p => p.ClassesAndClassifiers);
+        IEnumerable<Tuple<string, string>> o1 = Options.ClassesAndClassifiers;
         var o2 = o1.Select(p => p.Item1).ToList();
         return o2;
     }
 
-    public static List<string> Classes(string suffix)
+    public List<string> Classes()
     {
-        var opt = Program.Options.Where(o => o.Suffix == suffix).First();
-        return opt.ClassesAndClassifiers.Select(c => c.Item1.Trim()).Where(c => c != "").ToList();
+        return Options.ClassesAndClassifiers.Select(c => c.Item1.Trim()).Where(c => c != "").ToList();
     }
 
-    public static IParseTree Parse(Workspaces.Document document)
+    public IParseTree Parse(Workspaces.Document document)
     {
         string input = document.Code;
-        var dll = Program.Options
-            .Select(p => p.ParserLocation)
-            .First();
+        var dll = Options.ParserLocation;
         var full_path = Path.GetDirectoryName(dll);
         Assembly asm1 = Assembly.LoadFile(full_path + Path.DirectorySeparatorChar + "Antlr4.Runtime.Standard.dll");
         Assembly asm = Assembly.LoadFile(dll);

@@ -8,7 +8,7 @@ namespace Server
 {
     public class Options
     {
-        public string Suffix { get; set; }
+        public string LanguageId { get; set; }
         public string ParserLocation { get; set; }
         public List<Tuple<string, string>> ClassesAndClassifiers { get; set; }
     }

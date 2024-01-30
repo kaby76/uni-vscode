@@ -389,7 +389,7 @@
                 }
                 DidOpenTextDocumentParams request = arg.ToObject<DidOpenTextDocumentParams>();
                 var document = CheckDoc(request.TextDocument.Uri);
-                var language_id = request.TextDocument.LanguageId;
+                document.LanguageId = request.TextDocument.LanguageId;
                 document.Code = request.TextDocument.Text;
                 var workspace = document.Workspace;
                 new Module().Compile(workspace);

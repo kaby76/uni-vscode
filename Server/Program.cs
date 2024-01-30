@@ -20,47 +20,30 @@
         private string currentSettings;
         private MessageType messageType;
         private bool isDisposed;
-        public static List<Options> Options;
+        public static List<Grammar> Grammars;
 
         public static void Main(string[] args)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var fn = ".uni-vscode.rc";
             var ffn = home + Path.DirectorySeparatorChar + fn;
-            if (System.IO.File.Exists(ffn))
+            if (!System.IO.File.Exists(ffn))
+	        {
+		        throw new Exception("You do not have a .uni-vscode.rc file in " + home);
+	        }
+	        var jsonString = File.ReadAllText(home + Path.DirectorySeparatorChar + fn);
+	        var os = JsonSerializer.Deserialize<List<Options>>(jsonString);
+            Grammars = new List<Grammar>();
+            foreach (Options o in os)
             {
-                var jsonString = File.ReadAllText(home + Path.DirectorySeparatorChar + fn);
-                var o = JsonSerializer.Deserialize<List<Options>>(jsonString);
-                Program.Options = o;
-            }
-            else
-            {
-                List<Options> options = new List<Options>()
-                {
-                    new Options()
-                    {
-                        Suffix = ".java",
-                        ParserLocation = "c:/Users/kenne/Documents/GitHub/i2248/java/java/Generated/bin/Debug/net5.0/Test.dll",
-                        ClassesAndClassifiers = new List<Tuple<string, string>>()
-                        {
-                            new Tuple<string, string>("class", "//classDeclaration/IDENTIFIER"),
-                            new Tuple<string, string>("property", "//fieldDeclaration/variableDeclarators/variableDeclarator/variableDeclaratorId/IDENTIFIER"),
-                            new Tuple<string, string>("variable", "//variableDeclarator/variableDeclaratorId/IDENTIFIER"),
-                            new Tuple<string, string>("method", "//methodDeclaration/IDENTIFIER"),
-                            new Tuple<string, string>("keyword", "//(ABSTRACT | ASSERT | BOOLEAN | BREAK | BYTE | CASE | CHAR | CLASS | CONST | CONTINUE | DEFAULT | DO | DOUBLE | ELSE | ENUM | EXTENDS | FINAL | FINALLY | FLOAT | FOR | IF | GOTO | IMPLEMENTS | IMPORT | INSTANCEOF | INT | INTERFACE | LONG | NATIVE | NEW | PACKAGE | PRIVATE | PROTECTED | PUBLIC | SHORT | STATIC | STRICTFP | SUPER | SWITCH | SYNCHRONIZED | THIS | THROW | THROWS | TRANSIENT | TRY | VOID | VOLATILE | WHILE)"),
-                            new Tuple<string, string>("string", "//(DECIMAL_LITERAL | HEX_LITERAL | OCT_LITERAL | BINARY_LITERAL | HEX_FLOAT_LITERAL | BOOL_LITERAL | CHAR_LITERAL | STRING_LITERAL | NULL_LITERAL)"),
-                        }
-                    }
-                };
-                Utf8JsonWriter swj = new Utf8JsonWriter(File.Open(ffn, FileMode.CreateNew));
-                JsonSerializer.Serialize<List<Options>>(swj, Program.Options);
-                swj.Dispose();
-                Program.Options = options;
+                var g = new Grammar();
+                g.Options = o;
+                Grammars.Add(g);
             }
 
-            //TimeSpan delay = new TimeSpan(0, 0, 0, 20);
-            //Console.Error.WriteLine("Waiting " + delay + " seconds...");
-            //Thread.Sleep((int)delay.TotalMilliseconds);
+            TimeSpan delay = new TimeSpan(0, 0, 0, 20);
+            Console.Error.WriteLine("Waiting " + delay + " seconds...");
+            System.Threading.Thread.Sleep((int)delay.TotalMilliseconds);
             LoggerNs.Logger.Log.WriteLine("Starting");
             Program program = new Program();
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits

@@ -48,7 +48,7 @@
         }
         public string FullPath { get; private set; }
         public int[] Indices { get; set; }
-        public string ParseAs { get; set; }
+        public string LanguageId { get; set; }
         public Dictionary<TerminalNodeImpl, int> Refs
         {
             get;

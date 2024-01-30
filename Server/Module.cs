@@ -1,4 +1,6 @@
-﻿namespace Server
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Server
 {
     using Antlr4.Runtime;
     using Antlr4.Runtime.Tree;
@@ -139,9 +141,9 @@
             return myindex;
         }
 
-        public List<string> GetClasses(string suffix)
+        public List<string> GetClasses(string language_id)
         {
-            return Grammar.Classes(suffix);
+            return Program.Grammars.Where(g=> g.Options.LanguageId == language_id).First().Classes();
         }
 
         public QuickInfo GetQuickInfo(int index, Document doc)
@@ -151,7 +153,8 @@
                 Compile(doc.Workspace);
             }
             var ffn = doc.FullPath;
-            var suffix = System.IO.Path.GetExtension(ffn);
+            var grammar = _all_grammars.Where(g => g.LanguageId == doc.LanguageId).FirstOrDefault();
+            if (grammar == null) return null;
             Antlr4.Runtime.Tree.IParseTree pt = Find(index, doc);
             Antlr4.Runtime.Tree.IParseTree p = _all_parses[doc];
             if (pt == null) return null;
@@ -164,7 +167,7 @@
                 var c = _all_classified_nodes[i];
                 if (c.Contains(pt))
                 {
-                    var clas = Grammar.Classes(suffix)[i];
+                    var clas = grammar.Classes()[i];
                     sb.Append(" " + clas);
                 }
             }
@@ -379,7 +382,9 @@
             }
             var result = new List<Workspaces.Range>();
             var p = _all_parses[doc];
-            var (tree, parser, lexer) = (p, Grammar.Parser, Grammar.Lexer);
+            var grammar = _all_grammars.Where(g => g.LanguageId == doc.LanguageId).FirstOrDefault();
+            if (grammar == null) return null;
+            var (tree, parser, lexer) = (p, grammar.Parser, grammar.Lexer);
             
             
             using (AntlrTreeEditing.AntlrDOM.AntlrDynamicContext dynamicContext = new AntlrTreeEditing.AntlrDOM.ConvertToDOM().Try(tree, parser))
@@ -503,7 +508,7 @@
 
         static Dictionary<Document, IParseTree> _all_parses = new Dictionary<Document, IParseTree>();
         static List<List<IParseTree>> _all_classified_nodes = new List<List<IParseTree>>();
-
+        static List<Grammar> _all_grammars = new List<Grammar>();
         public Dictionary<Document, IParseTree> Compile(Workspace workspace)
         {
             try
@@ -514,18 +519,20 @@
                     string file_name = document.FullPath;
                     string suffix = System.IO.Path.GetExtension(file_name);
                     if (file_name == null) continue;
-                    var p = Grammar.Parse(document);
+                    var grammar = _all_grammars.Where(g => g.LanguageId == document.LanguageId).FirstOrDefault();
+                    if (grammar == null) continue;
+                    var p = grammar.Parse(document);
                     _all_parses[document] = p;
                     document.Changed = false;
                     _all_classified_nodes = new List<List<IParseTree>>();
-                    foreach (var c in Grammar.Classifiers(suffix))
+                    foreach (var c in grammar.Classifiers())
                     {
                         if (c == "")
                         {
                             _all_classified_nodes.Add(new List<IParseTree>());
                             continue;
                         }
-                        var (tree, parser, lexer) = (p, Grammar.Parser, Grammar.Lexer);
+                        var (tree, parser, lexer) = (p, grammar.Parser, grammar.Lexer);
                         using (AntlrTreeEditing.AntlrDOM.AntlrDynamicContext dynamicContext = new AntlrTreeEditing.AntlrDOM.ConvertToDOM().Try(tree, parser))
                         {
                             org.eclipse.wst.xml.xpath2.processor.Engine engine = new org.eclipse.wst.xml.xpath2.processor.Engine();
