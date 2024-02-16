@@ -12,6 +12,11 @@ npm i vscode-languageserver@7.0.0-next.7
 npm i vscode-languageserver-protocol@3.16.0-next.7
 npm i vscode-languageserver-types@3.16.0-next.3
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install vsce
+fi
+
+
 cp -r ../Server/bin/Debug/net7.0 ./server
 npm install
 npm run compile
